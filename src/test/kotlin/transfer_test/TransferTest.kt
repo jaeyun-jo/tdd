@@ -1,7 +1,7 @@
 package transfer_test
 
-import TransferService
-import TransferValidator
+import service.TransferService
+import service.TransferValidator
 import domain.Account
 import enums.HistoryType
 import exceptions.AccountNotFoundException

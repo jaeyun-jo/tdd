@@ -1,3 +1,5 @@
+package service
+
 import domain.Account
 import exceptions.ExceedTransferAmountAtATimeException
 import exceptions.ExceedWithdrawAmountPerDayException

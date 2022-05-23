@@ -1,3 +1,7 @@
+package transfer_test
+
+import TransferService
+import TransferValidator
 import domain.Account
 import enums.HistoryType
 import exceptions.AccountNotFoundException
@@ -21,13 +25,18 @@ import java.util.*
  *    실패테스트 작성 → 테스트 성공시키기 → 코드 청소하기
  *    쉬운것 예외적인 것 → 어려운것 정상적인 것
  */
+
 class TransferTest : BehaviorSpec({
     val userRepository: UserRepository = mockk()
     val transferRepository: TransferRepository = mockk()
     val historyRepository: HistoryRepository = mockk(relaxed = true)
 
     @InjectMockKs
-    val transferService: TransferService = TransferService(userRepository, transferRepository, historyRepository)
+    val transferValidator: TransferValidator = TransferValidator(transferRepository)
+
+    @InjectMockKs
+    val transferService: TransferService = TransferService(userRepository, transferValidator, historyRepository)
+
 
     Given("보내는 사람의 계좌의 잔액이 송금액보다 작은 상황에서") {
         val fromAccount = Account(

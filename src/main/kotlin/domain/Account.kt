@@ -5,4 +5,10 @@ data class Account (
     var balance: Long,
     var transferAvailableAmountPerDay: Long,
     var withdrawAvailableAmountAtATime: Long
-)
+) {
+    fun withdraw(amount: Long, toAccount: Account) {
+        balance -= amount
+        toAccount.balance += amount
+    }
+}
+

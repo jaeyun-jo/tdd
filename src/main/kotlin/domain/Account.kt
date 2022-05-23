@@ -1,6 +1,6 @@
 package domain
 
-data class User (
+data class Account (
     val id: Long,
     var balance: Long,
     var transferAvailableAmountPerDay: Long,

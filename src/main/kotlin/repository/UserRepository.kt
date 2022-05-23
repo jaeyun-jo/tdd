@@ -1,8 +1,8 @@
 package repository
 
-import domain.User
+import domain.Account
 import java.util.*
 
 interface UserRepository {
-    fun findById(id: Long): Optional<User>
+    fun findById(id: Long): Optional<Account>
 }

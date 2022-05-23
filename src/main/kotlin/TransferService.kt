@@ -1,9 +1,9 @@
-import domain.User
+import domain.Account
 import enums.HistoryType
 import exceptions.ExceedTransferAmountAtATimeException
 import exceptions.ExceedWithdrawAmountPerDayException
 import exceptions.LeakOfBalanceException
-import exceptions.NotFoundUserException
+import exceptions.AccountNotFoundException
 import repository.HistoryRepository
 import repository.TransferRepository
 import repository.UserRepository
@@ -15,26 +15,26 @@ class TransferService(
     private val historyRepository: HistoryRepository
 ) {
     fun transfer(fromUserId: Long, toUserId: Long, amount: Long) {
-        val fromUser: User = userRepository.findById(fromUserId).orElseThrow { NotFoundUserException() }
-        val toUser: User = userRepository.findById(toUserId).orElseThrow { NotFoundUserException() }
+        val fromAccount: Account = userRepository.findById(fromUserId).orElseThrow { AccountNotFoundException() }
+        val toAccount: Account = userRepository.findById(toUserId).orElseThrow { AccountNotFoundException() }
 
-        if (fromUser.balance < amount) {
+        if (fromAccount.balance < amount) {
             throw LeakOfBalanceException()
         }
 
-        if (fromUser.withdrawAvailableAmountAtATime < amount) {
+        if (fromAccount.withdrawAvailableAmountAtATime < amount) {
             throw ExceedTransferAmountAtATimeException()
         }
 
-        val todayTransferAmount = transferRepository.getTransferAmount(fromUser.id, LocalDate.now())
+        val todayTransferAmount = transferRepository.getTransferAmount(fromAccount.id, LocalDate.now())
 
-        if (fromUser.transferAvailableAmountPerDay <= todayTransferAmount + amount) {
+        if (fromAccount.transferAvailableAmountPerDay <= todayTransferAmount + amount) {
             throw ExceedWithdrawAmountPerDayException()
         }
 
-        fromUser.balance -= amount
-        toUser.balance += amount
+        fromAccount.balance -= amount
+        toAccount.balance += amount
 
-        historyRepository.save(fromUser, amount, HistoryType.WITHDRAW)
+        historyRepository.save(fromAccount, amount, HistoryType.WITHDRAW)
     }
 }

@@ -1,8 +1,8 @@
 package repository
 
-import domain.User
+import domain.Account
 import enums.HistoryType
 
 interface HistoryRepository {
-    fun save(user: User, amount: Long, type: HistoryType)
+    fun save(account: Account, amount: Long, type: HistoryType)
 }

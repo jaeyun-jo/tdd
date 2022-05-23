@@ -20,5 +20,6 @@ class TransferService(
         transferValidator.validateTransfer(fromAccount, amount)
         fromAccount.withdraw(amount, toAccount)
         historyRepository.save(fromAccount, amount, HistoryType.WITHDRAW)
+        historyRepository.save(toAccount, amount, HistoryType.DEPOSIT)
     }
 }

@@ -25,7 +25,6 @@ import java.util.*
  *    실패테스트 작성 → 테스트 성공시키기 → 코드 청소하기
  *    쉬운것 예외적인 것 → 어려운것 정상적인 것
  */
-
 class TransferTest : BehaviorSpec({
     val userRepository: UserRepository = mockk()
     val transferRepository: TransferRepository = mockk()
@@ -129,6 +128,7 @@ class TransferTest : BehaviorSpec({
             }
             Then("이체 기록이 남아야 한다") {
                 verify(exactly = 1) { historyRepository.save(fromAccount, transferAmount, HistoryType.WITHDRAW) }
+                verify(exactly = 1) { historyRepository.save(toAccount, transferAmount, HistoryType.DEPOSIT) }
             }
         }
     }

@@ -8,7 +8,7 @@ import repository.TransferRepository
 import java.time.LocalDate
 
 class TransferValidator(
-   private val transferRepository: TransferRepository
+    private val transferRepository: TransferRepository
 ) {
 
     fun validateTransfer(fromAccount: Account, amount: Long) {

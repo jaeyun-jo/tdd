@@ -2,13 +2,13 @@ package domain
 
 data class Account(
     val id: Long,
-    var balance: Long,
-    var transferAvailableAmountPerDay: Long,
-    var withdrawAvailableAmountAtATime: Long
+    var balance: Long = 0L,
+    val withdrawalAvailableAmountPerDay: Long = 0L,
+    val withdrawalAvailableAmountAtOnce: Long = 0L
 ) {
-    fun withdraw(amount: Long, toAccount: Account) {
+
+    fun withdraw(toAccount: Account, amount: Long) {
         balance -= amount
         toAccount.balance += amount
     }
 }
-

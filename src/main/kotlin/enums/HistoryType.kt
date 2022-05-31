@@ -1,5 +1,5 @@
 package enums
 
 enum class HistoryType {
-    WITHDRAW, DEPOSIT
+    WITHDRAW, DEBIT
 }

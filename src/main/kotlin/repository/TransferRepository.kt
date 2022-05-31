@@ -1,7 +1,8 @@
 package repository
 
+import domain.Account
 import java.time.LocalDate
 
 interface TransferRepository {
-    fun getTransferAmount(userId: Long, date: LocalDate): Long
+    fun getWithdrawalAmount(account: Account, date: LocalDate): Long
 }

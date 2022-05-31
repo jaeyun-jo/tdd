@@ -1,22 +1,28 @@
 package service
 
-import domain.Account
 import enums.HistoryType
 import exceptions.AccountNotFoundException
+import exceptions.ExceedWithdrawalAmountAtOnceException
+import exceptions.ExceedWithdrawalAmountPerDayException
+import exceptions.LeakOfBalanceException
+import repository.AccountRepository
 import repository.HistoryRepository
-import repository.UserRepository
+import repository.TransferRepository
+import java.time.LocalDate
 
 class TransferService(
-    private val userRepository: UserRepository,
+    private val accountRepository: AccountRepository,
     private val transferValidator: TransferValidator,
     private val historyRepository: HistoryRepository
 ) {
-    fun transfer(fromUserId: Long, toUserId: Long, amount: Long) {
-        val fromAccount: Account = userRepository.findById(fromUserId).orElseThrow { AccountNotFoundException() }
-        val toAccount: Account = userRepository.findById(toUserId).orElseThrow { AccountNotFoundException() }
-        transferValidator.validateTransfer(fromAccount, amount)
-        fromAccount.withdraw(amount, toAccount)
+
+    fun transfer(fromAccountId: Long, toAccountId: Long, amount: Long) {
+        val fromAccount = accountRepository.findById(fromAccountId).orElseThrow { AccountNotFoundException() }
+        val toAccount = accountRepository.findById(toAccountId).orElseThrow { AccountNotFoundException() }
+        transferValidator.validateTransfertaion(fromAccount, amount)
+        fromAccount.withdraw(toAccount, amount)
         historyRepository.save(fromAccount, amount, HistoryType.WITHDRAW)
-        historyRepository.save(toAccount, amount, HistoryType.DEPOSIT)
+        historyRepository.save(toAccount, amount, HistoryType.DEBIT)
     }
+
 }
